@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--  引用资源配置文件  -->
+    <properties resource="jdbc.properties"/>
+
+<!--  todo  整个xml文档的配置应匹配以下顺序：-->
+<!--    property*,plugin*,commentGenerator?,-->
+<!--    (connectionFactory|jdbcConnection),-->
+<!--    javaTypeResolver?,javaModelGenerator,-->
+<!--    sqlMapGenerator?,javaClientGenerator?,table+-->
+
+
+    <context id="mysql" defaultModelType="flat" targetRuntime="MyBatis3Simple">
+        <property name="useActualColumnNames" value="true"/>
+        <property name="autoDelimitKeywords" value="false"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!--lombok 自动生成lombok注解配置和根据数据库注释为实体添加注释, 需要自己编译文件才可以实现-->
+        <plugin type="org.mybatis.generator.plugins.LombokPlugin">
+            <property name="hasLombok" value="true"/>
+        </plugin>
+
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!-- 配置数据库链接信息 -->
+        <jdbcConnection
+                driverClass="${spring.datasource.driver-class-name}"
+                connectionURL="${spring.datasource.url}"
+                userId="${spring.datasource.username}"
+                password="${spring.datasource.password}">
+        </jdbcConnection>
+
+        <!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制-->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 数据库model -->
+        <javaModelGenerator targetPackage="com.kiss250.myBlog.domain.po" targetProject="src/main/java">
+            <property name="constructorBased" value="false"/>
+            <property name="immutable" value="false"/>
+        </javaModelGenerator>
+
+        <!-- 生成的 xml 文件-->
+        <sqlMapGenerator targetPackage="mapper"
+                         targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!-- mapper 文件   -->
+        <javaClientGenerator targetPackage="com.kiss250.myBlog.mapper"
+                             type="XMLMAPPER" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+
+        <table tableName="%" enableCountByExample= "false" enableUpdateByExample= "false" enableDeleteByExample= "false"
+               enableSelectByExample= "false" selectByExampleQueryId= "false"  >
+            <!--设置驼峰命名法 useActualColumnNames  useActualColumnNames=false 即不用原来的名字 -->
+            <property name="useActualColumnNames" value="false"/>
+
+            <generatedKey column="id"
+                      sqlStatement="MySql"
+                      identity="true"/>
+        </table>
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,10 @@
+
+
+### 测试创建
+POST http://localhost:9001/test/insert
+Content-Type: application/x-www-form-urlencoded
+
+name=name&age=2&salary=100
+
+### 测试列表
+GET http://localhost:9001/test/tt
